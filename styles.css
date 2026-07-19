@@ -618,6 +618,11 @@ a { text-decoration: none; color: inherit; }
   grid-template-columns: repeat(3, 1fr);
   gap: 40px;
 }
+.package-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 48px 40px;
+}
 .package-card { display: block; }
 
 /* ===== TEASER GRID (accueil) ===== */
@@ -964,6 +969,10 @@ a { text-decoration: none; color: inherit; }
   }
   .header-phone { display: none; }
   .burger { display: flex; }
+}
+
+@media (max-width: 640px) {
+  .package-grid-2 { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 560px) {
