@@ -76,27 +76,56 @@
 
     <div class="reveal">
       <h2 class="itinerary-title">Itinéraire</h2>
-      <div class="itinerary">
-        <details class="itinerary-day" open>
-          <summary>Jour 1 — Arrivée à Montréal et installation en chalet <span class="itinerary-toggle">+</span></summary>
-          <p>Accueil à Montréal, transfert inclus, puis installation dans votre chalet pour débuter le séjour.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 2 — Buggy sur neige et raquette en forêt <span class="itinerary-toggle">+</span></summary>
-          <p>Sortie en buggy sur neige le matin, puis marche en raquettes dans la forêt environnante l'après-midi.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 3 — Chiens de traîneau et motoneige découverte <span class="itinerary-toggle">+</span></summary>
-          <p>Une matinée avec les chiens de traîneau, suivie d'une première sortie en motoneige.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 4 — Motoneige vers le Domaine Lounan <span class="itinerary-toggle">+</span></summary>
-          <p>Une journée complète de motoneige à travers les sentiers menant au Domaine Lounan.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 5 — Motoneige et retour vers Montréal <span class="itinerary-toggle">+</span></summary>
-          <p>Une dernière sortie en motoneige avant le transfert retour vers Montréal.</p>
-        </details>
+      <div class="itinerary-layout">
+        <div class="itinerary-nav">
+          <button class="itinerary-step active" data-day="1">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 1</strong><span>Arrivée et installation</span></span>
+          </button>
+          <button class="itinerary-step" data-day="2">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 2</strong><span>Buggy et raquette en forêt</span></span>
+          </button>
+          <button class="itinerary-step" data-day="3">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 3</strong><span>Chiens de traîneau et motoneige</span></span>
+          </button>
+          <button class="itinerary-step" data-day="4">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 4</strong><span>Motoneige vers Domaine Lounan</span></span>
+          </button>
+          <button class="itinerary-step" data-day="5">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 5</strong><span>Motoneige et retour</span></span>
+          </button>
+        </div>
+        <div class="itinerary-panels">
+          <div class="itinerary-panel active" data-day="1">
+            <p class="panel-eyebrow">Jour 1</p>
+            <h3>Bienvenue au Québec</h3>
+            <p>Accueil à l'aéroport de Montréal, puis transfert vers le chalet qui sera votre point d'ancrage pour les premiers jours. Le paysage change vite : la ville laisse place aux forêts enneigées, et le froid sec du Québec s'invite dès la descente du véhicule. Une soirée pour prendre ses marques avant le grand départ.</p>
+          </div>
+          <div class="itinerary-panel" data-day="2">
+            <p class="panel-eyebrow">Jour 2</p>
+            <h3>Première immersion en forêt</h3>
+            <p>Le buggy sur neige ouvre le bal des activités, sur des pistes sinueuses qui réveillent immédiatement les sens. L'après-midi ralentit le rythme avec une randonnée en raquettes, l'occasion d'observer les traces d'animaux qui ponctuent le sous-bois et de savourer le silence propre à l'hiver canadien.</p>
+          </div>
+          <div class="itinerary-panel" data-day="3">
+            <p class="panel-eyebrow">Jour 3</p>
+            <h3>L'attelage et la machine</h3>
+            <p>Rien ne prépare vraiment à l'énergie d'un attelage de chiens de traîneau prêt à s'élancer. Une fois lancés, le silence retombe, seulement rythmé par le souffle des chiens. L'après-midi, place à la motoneige pour une première sortie qui donne le ton du reste du séjour.</p>
+          </div>
+          <div class="itinerary-panel" data-day="4">
+            <p class="panel-eyebrow">Jour 4</p>
+            <h3>Cap sur le Domaine Lounan</h3>
+            <p>Journée longue et intense en motoneige, à travers sentiers forestiers et étendues gelées jusqu'au Domaine Lounan. Les arrêts photo s'imposent devant certains panoramas, avant de retrouver le confort de l'hébergement du soir, fourbu mais comblé.</p>
+          </div>
+          <div class="itinerary-panel" data-day="5">
+            <p class="panel-eyebrow">Jour 5</p>
+            <h3>Dernière glisse et retour</h3>
+            <p>Une ultime sortie en motoneige pour profiter de chaque instant avant que le séjour ne touche à sa fin. Le transfert vers Montréal referme la parenthèse blanche, avec la certitude d'avoir vécu l'hiver canadien dans ce qu'il a de plus vrai.</p>
+          </div>
+        </div>
       </div>
     </div>
 

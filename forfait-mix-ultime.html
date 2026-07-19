@@ -76,43 +76,92 @@
 
     <div class="reveal">
       <h2 class="itinerary-title">Itinéraire</h2>
-      <div class="itinerary">
-        <details class="itinerary-day" open>
-          <summary>Jour 1 — Arrivée à Montréal <span class="itinerary-toggle">+</span></summary>
-          <p>Accueil à Montréal et installation pour cette première nuit avant le départ vers la nature.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 2 — Découverte libre de Montréal <span class="itinerary-toggle">+</span></summary>
-          <p>Une journée libre pour profiter de la ville avant de plonger dans l'hiver canadien.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 3 — Buggy sur neige et raquette en forêt <span class="itinerary-toggle">+</span></summary>
-          <p>Sortie en buggy sur neige le matin, puis marche en raquettes en forêt l'après-midi.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 4 — Chiens de traîneau et motoneige découverte <span class="itinerary-toggle">+</span></summary>
-          <p>Une matinée avec les chiens de traîneau, suivie d'une première sortie en motoneige.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 5 — Motoneige vers le Domaine Lounan <span class="itinerary-toggle">+</span></summary>
-          <p>Une journée complète de motoneige à travers les sentiers menant au Domaine Lounan.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 6 — Motoneige jusqu'au Réservoir Baskatong <span class="itinerary-toggle">+</span></summary>
-          <p>Une étape plus longue en motoneige, avec vue sur les paysages du Réservoir Baskatong.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 7 — Motoneige retour et détente <span class="itinerary-toggle">+</span></summary>
-          <p>Retour progressif en motoneige, avec du temps libre pour récupérer.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 8 — Mont-Tremblant et spa <span class="itinerary-toggle">+</span></summary>
-          <p>Montée en télécabine panoramique à Mont-Tremblant, puis moment de détente au spa.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 9 — Retour à Montréal <span class="itinerary-toggle">+</span></summary>
-          <p>Dernier transfert vers Montréal pour clore le séjour.</p>
-        </details>
+      <div class="itinerary-layout">
+        <div class="itinerary-nav">
+          <button class="itinerary-step active" data-day="1">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 1</strong><span>Arrivée à Montréal</span></span>
+          </button>
+          <button class="itinerary-step" data-day="2">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 2</strong><span>Découverte libre de Montréal</span></span>
+          </button>
+          <button class="itinerary-step" data-day="3">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 3</strong><span>Buggy et raquette en forêt</span></span>
+          </button>
+          <button class="itinerary-step" data-day="4">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 4</strong><span>Chiens de traîneau et motoneige</span></span>
+          </button>
+          <button class="itinerary-step" data-day="5">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 5</strong><span>Motoneige vers Domaine Lounan</span></span>
+          </button>
+          <button class="itinerary-step" data-day="6">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 6</strong><span>Réservoir Baskatong</span></span>
+          </button>
+          <button class="itinerary-step" data-day="7">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 7</strong><span>Motoneige retour et détente</span></span>
+          </button>
+          <button class="itinerary-step" data-day="8">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 8</strong><span>Mont-Tremblant et spa</span></span>
+          </button>
+          <button class="itinerary-step" data-day="9">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 9</strong><span>Retour à Montréal</span></span>
+          </button>
+        </div>
+        <div class="itinerary-panels">
+          <div class="itinerary-panel active" data-day="1">
+            <p class="panel-eyebrow">Jour 1</p>
+            <h3>Premier contact avec le Québec</h3>
+            <p>L'atterrissage à Montréal marque le début d'un séjour qui prend son temps. Installation pour la nuit avant de rejoindre, dès le lendemain, les grands espaces qui font la réputation de l'hiver canadien.</p>
+          </div>
+          <div class="itinerary-panel" data-day="2">
+            <p class="panel-eyebrow">Jour 2</p>
+            <h3>Une journée en ville avant la forêt</h3>
+            <p>Dernier jour de confort urbain avant l'immersion complète : la journée est libre pour arpenter les rues de Montréal, entre quartiers historiques et effervescence hivernale, avant de tourner définitivement le dos à la ville.</p>
+          </div>
+          <div class="itinerary-panel" data-day="3">
+            <p class="panel-eyebrow">Jour 3</p>
+            <h3>Première immersion en forêt</h3>
+            <p>Le buggy sur neige ouvre les hostilités dès le matin, suivi d'une marche en raquettes qui ralentit le rythme et permet d'apprécier le silence propre aux forêts laurentiennes recouvertes de neige fraîche.</p>
+          </div>
+          <div class="itinerary-panel" data-day="4">
+            <p class="panel-eyebrow">Jour 4</p>
+            <h3>L'attelage et la machine</h3>
+            <p>Les chiens de traîneau donnent le ton de la matinée, dans une glisse silencieuse rythmée par leur souffle. L'après-midi initie à la motoneige, en douceur, avant les grandes étapes des jours suivants.</p>
+          </div>
+          <div class="itinerary-panel" data-day="5">
+            <p class="panel-eyebrow">Jour 5</p>
+            <h3>Cap sur le Domaine Lounan</h3>
+            <p>Première grande sortie en motoneige à travers sentiers et clairières jusqu'au Domaine Lounan, où le paysage se resserre puis s'ouvre à nouveau sur des panoramas qui valent chaque kilomètre parcouru.</p>
+          </div>
+          <div class="itinerary-panel" data-day="6">
+            <p class="panel-eyebrow">Jour 6</p>
+            <h3>Les grands espaces du Baskatong</h3>
+            <p>L'étape la plus spectaculaire du séjour longe les rives du Réservoir Baskatong, où neige et glace se confondent à l'horizon. Un décor à la démesure du Québec hivernal.</p>
+          </div>
+          <div class="itinerary-panel" data-day="7">
+            <p class="panel-eyebrow">Jour 7</p>
+            <h3>Ralentir, enfin</h3>
+            <p>Le retour se fait à un rythme plus doux, avec une sortie plus courte qui laisse la place au repos avant les derniers temps forts du séjour.</p>
+          </div>
+          <div class="itinerary-panel" data-day="8">
+            <p class="panel-eyebrow">Jour 8</p>
+            <h3>Télécabine et détente</h3>
+            <p>Changement de décor avec la montée en télécabine panoramique de Mont-Tremblant, offrant une vue dégagée sur les sommets environnants. La journée se termine en douceur, au spa, pour délasser les muscles sollicités depuis le début du séjour.</p>
+          </div>
+          <div class="itinerary-panel" data-day="9">
+            <p class="panel-eyebrow">Jour 9</p>
+            <h3>Le dernier matin</h3>
+            <p>Un ultime transfert vers Montréal referme ce grand tour de l'hiver canadien. Il ne reste que les images plein la tête et l'envie, déjà, d'y retourner.</p>
+          </div>
+        </div>
       </div>
     </div>
 

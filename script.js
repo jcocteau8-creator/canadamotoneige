@@ -24,6 +24,21 @@ document.querySelector('.contact-form')?.addEventListener('submit', (e) => {
   e.target.reset();
 });
 
+// Itinéraire interactif (timeline jour par jour)
+document.querySelectorAll('.itinerary-layout').forEach(layout => {
+  const steps = layout.querySelectorAll('.itinerary-step');
+  const panels = layout.querySelectorAll('.itinerary-panel');
+  steps.forEach(step => {
+    step.addEventListener('click', () => {
+      steps.forEach(s => s.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      step.classList.add('active');
+      const day = step.dataset.day;
+      layout.querySelector(`.itinerary-panel[data-day="${day}"]`)?.classList.add('active');
+    });
+  });
+});
+
 // Pré-sélectionne le forfait depuis l'URL (ex: contact.html?forfait=Mix%20Express)
 const forfaitParam = new URLSearchParams(location.search).get('forfait');
 if (forfaitParam) {

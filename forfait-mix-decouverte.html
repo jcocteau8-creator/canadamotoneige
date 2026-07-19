@@ -76,19 +76,38 @@
 
     <div class="reveal">
       <h2 class="itinerary-title">Itinéraire</h2>
-      <div class="itinerary">
-        <details class="itinerary-day" open>
-          <summary>Jour 1 — Buggy sur neige, raquette et installation au chalet <span class="itinerary-toggle">+</span></summary>
-          <p>Prise en main du buggy sur neige puis marche en raquettes, avant l'installation dans votre chalet pour le reste du séjour.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 2 — Chiens de traîneau et initiation motoneige <span class="itinerary-toggle">+</span></summary>
-          <p>Une matinée avec les chiens de traîneau, puis une première prise en main de la motoneige l'après-midi.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 3 — Expédition motoneige dans les Hautes-Laurentides <span class="itinerary-toggle">+</span></summary>
-          <p>Une journée complète de motoneige à travers les sentiers et paysages des Hautes-Laurentides.</p>
-        </details>
+      <div class="itinerary-layout">
+        <div class="itinerary-nav">
+          <button class="itinerary-step active" data-day="1">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 1</strong><span>Buggy, raquette et chalet</span></span>
+          </button>
+          <button class="itinerary-step" data-day="2">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 2</strong><span>Chiens de traîneau et motoneige</span></span>
+          </button>
+          <button class="itinerary-step" data-day="3">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 3</strong><span>Expédition Hautes-Laurentides</span></span>
+          </button>
+        </div>
+        <div class="itinerary-panels">
+          <div class="itinerary-panel active" data-day="1">
+            <p class="panel-eyebrow">Jour 1</p>
+            <h3>Arrivée et première glisse</h3>
+            <p>L'arrivée se fait en douceur, avec l'installation dans votre chalet niché en pleine forêt boréale. Avant même de poser les valises, direction le buggy sur neige pour une première sortie tonique, suivie d'une marche en raquettes qui permet de prendre la mesure du silence environnant. La soirée se referme au coin du poêle, entre deux histoires de sentiers et de tempêtes passées.</p>
+          </div>
+          <div class="itinerary-panel" data-day="2">
+            <p class="panel-eyebrow">Jour 2</p>
+            <h3>Entre crissements et moteurs</h3>
+            <p>Réveil matinal pour rejoindre le chenil : les chiens s'impatientent avant le départ, puis tout s'apaise dès les premiers mètres de glisse silencieuse. L'après-midi change de rythme avec une initiation à la motoneige, pour apprivoiser la machine avant l'expédition du lendemain.</p>
+          </div>
+          <div class="itinerary-panel" data-day="3">
+            <p class="panel-eyebrow">Jour 3</p>
+            <h3>Plein gaz vers les Hautes-Laurentides</h3>
+            <p>Dernière journée, et la plus grisante : une expédition complète en motoneige à travers les reliefs des Hautes-Laurentides. Les sentiers serpentent entre forêts givrées et lacs gelés, offrant des panoramas qui justifient à eux seuls le voyage. Retour au point de départ des étoiles plein la tête.</p>
+          </div>
+        </div>
       </div>
     </div>
 

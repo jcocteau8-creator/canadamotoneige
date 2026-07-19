@@ -76,35 +76,74 @@
 
     <div class="reveal">
       <h2 class="itinerary-title">Itinéraire</h2>
-      <div class="itinerary">
-        <details class="itinerary-day" open>
-          <summary>Jour 1 — Arrivée à Montréal et installation en chalet <span class="itinerary-toggle">+</span></summary>
-          <p>Accueil à Montréal, transfert inclus, puis installation dans votre chalet.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 2 — Buggy sur neige et raquette en forêt <span class="itinerary-toggle">+</span></summary>
-          <p>Sortie en buggy sur neige le matin, puis marche en raquettes en forêt l'après-midi.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 3 — Chiens de traîneau et motoneige découverte <span class="itinerary-toggle">+</span></summary>
-          <p>Une matinée avec les chiens de traîneau, suivie d'une première sortie en motoneige.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 4 — Motoneige vers le Domaine Lounan <span class="itinerary-toggle">+</span></summary>
-          <p>Une journée complète de motoneige à travers les sentiers menant au Domaine Lounan.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 5 — Motoneige jusqu'au Réservoir Baskatong <span class="itinerary-toggle">+</span></summary>
-          <p>Une étape plus longue en motoneige, avec vue sur les paysages du Réservoir Baskatong.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 6 — Motoneige retour et détente <span class="itinerary-toggle">+</span></summary>
-          <p>Retour progressif en motoneige, avec du temps libre pour profiter du chalet.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 7 — Transfert retour vers Montréal <span class="itinerary-toggle">+</span></summary>
-          <p>Dernier réveil dans la nature avant le transfert retour vers Montréal.</p>
-        </details>
+      <div class="itinerary-layout">
+        <div class="itinerary-nav">
+          <button class="itinerary-step active" data-day="1">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 1</strong><span>Arrivée et installation</span></span>
+          </button>
+          <button class="itinerary-step" data-day="2">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 2</strong><span>Buggy et raquette en forêt</span></span>
+          </button>
+          <button class="itinerary-step" data-day="3">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 3</strong><span>Chiens de traîneau et motoneige</span></span>
+          </button>
+          <button class="itinerary-step" data-day="4">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 4</strong><span>Motoneige vers Domaine Lounan</span></span>
+          </button>
+          <button class="itinerary-step" data-day="5">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 5</strong><span>Réservoir Baskatong</span></span>
+          </button>
+          <button class="itinerary-step" data-day="6">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 6</strong><span>Motoneige retour et détente</span></span>
+          </button>
+          <button class="itinerary-step" data-day="7">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 7</strong><span>Transfert retour Montréal</span></span>
+          </button>
+        </div>
+        <div class="itinerary-panels">
+          <div class="itinerary-panel active" data-day="1">
+            <p class="panel-eyebrow">Jour 1</p>
+            <h3>Bienvenue au Québec</h3>
+            <p>Dès la sortie de l'aéroport de Montréal, le transfert vous mène vers votre chalet, porte d'entrée d'une semaine pensée pour ne rien manquer de l'hiver canadien. Un climat sec, une lumière particulière, et déjà l'envie de chausser les raquettes.</p>
+          </div>
+          <div class="itinerary-panel" data-day="2">
+            <p class="panel-eyebrow">Jour 2</p>
+            <h3>Première immersion en forêt</h3>
+            <p>Le buggy sur neige donne le ton dès le matin, avant qu'une marche en raquettes ne ralentisse le rythme l'après-midi. Entre les deux, la forêt laurentienne dévoile ses reliefs recouverts de neige fraîche.</p>
+          </div>
+          <div class="itinerary-panel" data-day="3">
+            <p class="panel-eyebrow">Jour 3</p>
+            <h3>L'attelage et la machine</h3>
+            <p>Le meneur de chiens transmet ses consignes avant le grand départ : dès les premiers mètres, l'attelage trouve son rythme, filant sur la neige tassée. L'après-midi initie à la motoneige, pour une prise en main progressive avant les grandes étapes à venir.</p>
+          </div>
+          <div class="itinerary-panel" data-day="4">
+            <p class="panel-eyebrow">Jour 4</p>
+            <h3>Cap sur le Domaine Lounan</h3>
+            <p>Première grande étape en motoneige, à travers sentiers et clairières jusqu'au Domaine Lounan. Le rythme s'installe, entre concentration sur la conduite et émerveillement face aux paysages qui défilent.</p>
+          </div>
+          <div class="itinerary-panel" data-day="5">
+            <p class="panel-eyebrow">Jour 5</p>
+            <h3>Les grands espaces du Baskatong</h3>
+            <p>L'étape la plus longue du séjour mène jusqu'aux rives du Réservoir Baskatong, où l'horizon semble ne plus avoir de limite. La motoneige y trouve tout son sens : ici, la neige et l'eau gelée se confondent à perte de vue.</p>
+          </div>
+          <div class="itinerary-panel" data-day="6">
+            <p class="panel-eyebrow">Jour 6</p>
+            <h3>Ralentir, enfin</h3>
+            <p>Le chemin du retour se fait sans précipitation, avec une sortie plus courte en motoneige qui laisse du temps pour souffler. L'après-midi et la soirée sont pensées pour profiter du chalet, sans autre objectif que de savourer l'instant.</p>
+          </div>
+          <div class="itinerary-panel" data-day="7">
+            <p class="panel-eyebrow">Jour 7</p>
+            <h3>Le dernier matin</h3>
+            <p>Un dernier réveil dans le silence enneigé avant le transfert vers Montréal. Le séjour se referme, mais l'odeur du feu de bois et le souvenir des sentiers, eux, restent.</p>
+          </div>
+        </div>
       </div>
     </div>
 

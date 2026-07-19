@@ -76,15 +76,29 @@
 
     <div class="reveal">
       <h2 class="itinerary-title">Itinéraire</h2>
-      <div class="itinerary">
-        <details class="itinerary-day" open>
-          <summary>Jour 1 — Buggy sur neige et raquette en forêt <span class="itinerary-toggle">+</span></summary>
-          <p>Prise en main du buggy sur neige, puis marche en raquettes dans la forêt environnante avant l'installation à l'hôtel.</p>
-        </details>
-        <details class="itinerary-day">
-          <summary>Jour 2 — Chiens de traîneau et initiation motoneige <span class="itinerary-toggle">+</span></summary>
-          <p>Une matinée avec les chiens de traîneau, suivie d'une première sortie en motoneige pour clore le séjour.</p>
-        </details>
+      <div class="itinerary-layout">
+        <div class="itinerary-nav">
+          <button class="itinerary-step active" data-day="1">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 1</strong><span>Buggy sur neige et raquette</span></span>
+          </button>
+          <button class="itinerary-step" data-day="2">
+            <span class="step-dot"></span>
+            <span class="step-label"><strong>Jour 2</strong><span>Chiens de traîneau et motoneige</span></span>
+          </button>
+        </div>
+        <div class="itinerary-panels">
+          <div class="itinerary-panel active" data-day="1">
+            <p class="panel-eyebrow">Jour 1</p>
+            <h3>Premiers pas dans la neige</h3>
+            <p>Vous voilà au cœur des grands espaces enneigés. Dès l'arrivée, direction la forêt pour une prise en main du buggy sur neige : un engin nerveux, parfait pour se familiariser avec le terrain avant les choses sérieuses. L'après-midi se poursuit à pied, en raquettes, dans un silence blanc que seul le crissement de la neige vient troubler. Retour à l'hôtel en fin de journée, pour un repos bien mérité avant la suite.</p>
+          </div>
+          <div class="itinerary-panel" data-day="2">
+            <p class="panel-eyebrow">Jour 2</p>
+            <h3>Le grand départ</h3>
+            <p>La matinée appartient aux chiens de traîneau : leur énergie communicative se ressent dès les premiers mètres, et le meneur vous confie vite les rênes. L'après-midi, cap sur la motoneige pour une initiation en douceur sur les sentiers alentour. Le temps d'un souffle, l'hiver canadien vous aura montré l'essentiel avant le retour.</p>
+          </div>
+        </div>
       </div>
     </div>
 
