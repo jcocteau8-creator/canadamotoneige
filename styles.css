@@ -179,7 +179,8 @@ a { text-decoration: none; color: inherit; }
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px;
+  padding: 10px;
+  margin: -10px 0;
 }
 .burger span {
   width: 22px;
@@ -194,6 +195,7 @@ a { text-decoration: none; color: inherit; }
 .hero {
   position: relative;
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   align-items: center;
   background: url('https://images.unsplash.com/photo-1517783999520-f068d7431a60?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
@@ -655,8 +657,9 @@ a { text-decoration: none; color: inherit; }
 .detail-body { max-width: 760px; margin: 0 auto; }
 .package-pricing {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 64px;
+  gap: 32px 64px;
   padding: 40px;
   background: var(--cream);
   border-radius: var(--radius-lg);
@@ -1137,7 +1140,12 @@ a { text-decoration: none; color: inherit; }
     border-top: 1px solid rgba(255,255,255,0.08);
   }
   .header-phone { display: none; }
+  .header-cta { margin-left: auto; gap: 12px; }
+  .header-cta .btn-primary { padding: 10px 18px; font-size: 0.78rem; }
   .burger { display: flex; }
+
+  .hero-content, .page-hero-content, .image-break-content { padding: 0 24px; }
+  .stat-band { padding: 56px 0; }
 }
 
 @media (max-width: 640px) {
@@ -1149,4 +1157,9 @@ a { text-decoration: none; color: inherit; }
   .form-row { grid-template-columns: 1fr; }
   .footer-inner { grid-template-columns: 1fr; }
   .cta-banner-media { background-attachment: scroll; }
+  .compare-cell { padding: 20px 24px; }
+  .detail-body { padding: 0 4px; }
+  .package-pricing { flex-direction: column; gap: 20px; }
+  .hero-actions { gap: 20px; }
+  .footer-bottom { flex-direction: column; gap: 6px; }
 }
