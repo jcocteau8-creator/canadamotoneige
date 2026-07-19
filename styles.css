@@ -651,6 +651,108 @@ a { text-decoration: none; color: inherit; }
 }
 .included-list svg { color: var(--ice-500); flex-shrink: 0; }
 
+/* ===== DETAIL FORFAIT ===== */
+.detail-body { max-width: 760px; margin: 0 auto; }
+.package-pricing {
+  display: flex;
+  justify-content: center;
+  gap: 64px;
+  padding: 40px;
+  background: var(--cream);
+  border-radius: var(--radius-lg);
+  margin-bottom: 40px;
+  text-align: center;
+}
+.price-block strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--navy-900);
+  margin-bottom: 6px;
+}
+.price-block span {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gray-500);
+}
+.info-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 40px;
+  font-size: 0.92rem;
+  font-weight: 300;
+}
+.info-rows strong {
+  font-weight: 500;
+  color: var(--navy-900);
+  margin-right: 6px;
+}
+.package-description p {
+  margin-bottom: 18px;
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--gray-700);
+}
+.package-description p:last-child { margin-bottom: 0; }
+.highlight-banner {
+  background: var(--navy-950);
+  color: var(--white);
+  text-align: center;
+  padding: 36px 24px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.1rem, 2.4vw, 1.5rem);
+  border-radius: var(--radius-lg);
+  margin: 48px 0;
+}
+.itinerary-title {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+.itinerary { border-top: 1px solid var(--line); }
+.itinerary-day { border-bottom: 1px solid var(--line); }
+.itinerary-day summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  font-weight: 500;
+  color: var(--navy-900);
+  font-size: 0.95rem;
+}
+.itinerary-day summary::-webkit-details-marker { display: none; }
+.itinerary-toggle {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--ice-500);
+  flex-shrink: 0;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+.itinerary-day[open] .itinerary-toggle { transform: rotate(45deg); }
+.itinerary-day p {
+  padding-bottom: 20px;
+  font-size: 0.92rem;
+  font-weight: 300;
+  color: var(--gray-500);
+  max-width: 60ch;
+}
+
+@media (max-width: 560px) {
+  .package-pricing { gap: 32px; padding: 28px; }
+}
+
 /* ===== TWO COL ===== */
 .two-col {
   display: grid;
