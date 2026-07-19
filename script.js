@@ -24,6 +24,14 @@ document.querySelector('.contact-form')?.addEventListener('submit', (e) => {
   e.target.reset();
 });
 
+// Pré-sélectionne le forfait depuis l'URL (ex: contact.html?forfait=Mix%20Express)
+const forfaitParam = new URLSearchParams(location.search).get('forfait');
+if (forfaitParam) {
+  const missionSelect = document.querySelector('select[name="mission"]');
+  const match = missionSelect && Array.from(missionSelect.options).find(o => o.textContent.trim() === forfaitParam);
+  if (match) missionSelect.value = match.value;
+}
+
 // Reveal on scroll
 const revealEls = document.querySelectorAll('.reveal');
 const revealObserver = new IntersectionObserver((entries) => {
