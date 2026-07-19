@@ -55,3 +55,36 @@ const counterObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.5 });
 counters.forEach(el => counterObserver.observe(el));
+
+// Testimonial slider
+const track = document.getElementById('testimonialTrack');
+const dotsWrap = document.getElementById('testimonialDots');
+if (track && dotsWrap) {
+  const slides = Array.from(track.children);
+  let current = 0;
+  let timer;
+
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.setAttribute('aria-label', `Témoignage ${i + 1}`);
+    dot.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(dot);
+  });
+  const dots = Array.from(dotsWrap.children);
+
+  function goTo(index) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = index;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    resetTimer();
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    timer = setInterval(() => goTo((current + 1) % slides.length), 6000);
+  }
+
+  goTo(0);
+}
