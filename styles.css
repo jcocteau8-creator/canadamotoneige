@@ -103,7 +103,7 @@ a { text-decoration: none; color: inherit; }
   align-items: center;
   justify-content: space-between;
   height: 88px;
-  gap: 32px;
+  gap: 20px;
   transition: height 0.4s ease;
 }
 .site-header.scrolled .header-inner { height: 76px; }
@@ -135,17 +135,19 @@ a { text-decoration: none; color: inherit; }
 
 .main-nav {
   display: flex;
-  gap: 40px;
+  gap: 22px;
   flex: 1;
   justify-content: center;
+  min-width: 0;
 }
 .main-nav a {
   color: var(--white);
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.03em;
   opacity: 0.85;
+  white-space: nowrap;
   transition: opacity 0.2s, color 0.2s;
 }
 .site-header.scrolled .main-nav a { color: var(--navy-900); }
@@ -1224,7 +1226,7 @@ a { text-decoration: none; color: inherit; }
     overflow: hidden;
     transition: max-height 0.3s ease;
   }
-  .main-nav.open { max-height: 320px; }
+  .main-nav.open { max-height: 400px; }
   .main-nav a {
     color: var(--white) !important;
     padding: 18px 24px;
