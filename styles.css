@@ -207,7 +207,7 @@ a { text-decoration: none; color: inherit; }
   min-height: 100svh;
   display: flex;
   align-items: center;
-  background: url('https://images.unsplash.com/photo-1517783999520-f068d7431a60?auto=format&fit=crop&w=2000&q=80') center/cover no-repeat;
+  background: url('assets/gallery/motoneige-aerien.jpg') center/cover no-repeat;
 }
 .hero-overlay {
   position: absolute;
@@ -870,7 +870,7 @@ a { text-decoration: none; color: inherit; }
 .two-col-media {
   min-height: 460px;
   border-radius: var(--radius-lg);
-  background: url('https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+  background: url('assets/gallery/motoneige-phare.jpg') center/cover no-repeat;
   box-shadow: var(--shadow);
 }
 
