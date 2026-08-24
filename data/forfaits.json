@@ -107,7 +107,7 @@
    "type": "raid",
    "devise": "EUR",
    "prixDuo": 600,
-   "prixSolo": 1000
+   "prixSolo": 10000
   },
   {
    "page": "raid-periple-sportif.html",

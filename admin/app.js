@@ -90,6 +90,7 @@ function seed() {
 }
 
 var DB;
+var ETAT = { source: '?', ecriture: null };
 function load() {
   try { DB = JSON.parse(localStorage.getItem(KEY)); } catch (e) { DB = null; }
   if (!DB || !DB.meta) { DB = seed(); save(); }
@@ -108,32 +109,146 @@ function toast(msg) {
 // data/forfaits.json est genere depuis les pages du site : c'est lui qui fait
 // foi pour les tarifs. On l'aligne a chaque demarrage, en conservant les
 // champs propres au back-office (capacite, notes...).
-function syncForfaits(cb) {
+function chargerForfaits(cb) {
   fetch('../data/forfaits.json', { cache: 'no-store' })
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (d) {
-      if (!d || !d.forfaits) return cb(0);
-      var n = 0;
-      d.forfaits.forEach(function (src) {
-        var f = DB.forfaits.filter(function (x) { return x.page === src.page; })[0];
-        if (!f) {
-          DB.forfaits.push({ id: uid(), page: src.page, nom: src.nom, duree: src.duree,
-            type: src.type, devise: src.devise, prix: src.prixDuo, prixSolo: src.prixSolo,
-            km: 0, hebergement: '', capacite: 12, actif: true });
-          n++;
-          return;
-        }
-        if (f.prix !== src.prixDuo || f.prixSolo !== src.prixSolo ||
-            f.nom !== src.nom || f.duree !== src.duree) {
-          f.prix = src.prixDuo; f.prixSolo = src.prixSolo;
-          f.nom = src.nom; f.duree = src.duree; f.type = src.type;
-          n++;
-        }
+      if (!d || !d.forfaits || !d.forfaits.length) throw new Error('vide');
+
+      // l'identifiant devient la page : stable d'un chargement a l'autre,
+      // donc les reservations ne perdent jamais leur forfait
+      var parNom = {}, remap = {};
+      DB.forfaits.forEach(function (f) {
+        parNom[String(f.nom || '').trim().toLowerCase()] = f;
       });
-      if (n) save();
-      cb(n);
+
+      DB.forfaits = d.forfaits.map(function (src) {
+        var anc = parNom[String(src.nom || '').trim().toLowerCase()] || {};
+        if (anc.id && anc.id !== src.page) remap[anc.id] = src.page;
+        return {
+          id: src.page, page: src.page, nom: src.nom, duree: src.duree, type: src.type,
+          devise: src.devise || 'EUR',
+          prix: Number(src.prixDuo) || 0, prixSolo: Number(src.prixSolo) || 0,
+          km: anc.km || 0, hebergement: anc.hebergement || '',
+          capacite: anc.capacite || 12, actif: anc.actif !== false
+        };
+      });
+      DB.reservations.forEach(function (r) {
+        if (remap[r.forfaitId]) r.forfaitId = remap[r.forfaitId];
+      });
+      save();
+      ETAT.source = 'fichier';
+      cb(true);
     })
-    .catch(function () { cb(-1); });
+    .catch(function () { ETAT.source = 'local'; cb(false); });
+}
+
+function dedupeForfaits() {
+  // on trie d'abord pour que l'exemplaire le mieux renseigne (celui qui a une
+  // page et un prix solo) soit rencontre en premier et donc conserve
+  var ordre = DB.forfaits.slice().sort(function (a, b) {
+    return ((b.page ? 2 : 0) + (b.prixSolo ? 1 : 0)) - ((a.page ? 2 : 0) + (a.prixSolo ? 1 : 0));
+  });
+  var vus = {}, garder = [], remap = {};
+  ordre.forEach(function (f) {
+    var cle = String(f.nom || f.page || f.id).trim().toLowerCase();
+    if (vus[cle]) { remap[f.id] = vus[cle]; return; }
+    vus[cle] = f.id;
+    garder.push(f);
+  });
+  var n = DB.forfaits.length - garder.length;
+  if (!n) return 0;
+  DB.forfaits = garder;
+  DB.reservations.forEach(function (r) {
+    if (remap[r.forfaitId]) r.forfaitId = remap[r.forfaitId];
+  });
+  save();
+  return n;
+}
+
+/* ---------- ecriture directe dans le dossier du site ----------
+   Avec l'API File System Access, le back-office peut ecrire lui-meme
+   data/forfaits.json. Une autorisation est demandee une seule fois ;
+   la reference du dossier est conservee dans IndexedDB. */
+var dirHandle = null;
+
+function idbStore(mode, cb) {
+  var r = indexedDB.open('cm_admin_fs', 1);
+  r.onupgradeneeded = function () { r.result.createObjectStore('h'); };
+  r.onsuccess = function () {
+    try { cb(r.result.transaction('h', mode).objectStore('h')); }
+    catch (e) { cb(null); }
+  };
+  r.onerror = function () { cb(null); };
+}
+function memoriserDossier(h) { idbStore('readwrite', function (o) { if (o) o.put(h, 'dir'); }); }
+function relireDossier(cb) {
+  if (!window.indexedDB) return cb(null);
+  idbStore('readonly', function (o) {
+    if (!o) return cb(null);
+    var q = o.get('dir');
+    q.onsuccess = function () { cb(q.result || null); };
+    q.onerror = function () { cb(null); };
+  });
+}
+
+function dossierDisponible() { return !!window.showDirectoryPicker; }
+
+function connecterDossier() {
+  if (!dossierDisponible()) {
+    alert("Votre navigateur ne permet pas l'ecriture directe dans un dossier.\n\n" +
+          "Utilisez Chrome ou Edge, ou passez par le bouton Publier vers le site.");
+    return;
+  }
+  window.showDirectoryPicker({ mode: 'readwrite' }).then(function (h) {
+    dirHandle = h;
+    memoriserDossier(h);
+    ecrireForfaits(function (ok) {
+      toast(ok ? 'Dossier connecte, tarifs publies' : 'Dossier connecte');
+      render();
+    });
+  }).catch(function () { /* annule par l'utilisateur */ });
+}
+
+function donneesForfaits() {
+  return {
+    maj: today(),
+    forfaits: DB.forfaits.filter(function (f) { return f.page; }).map(function (f) {
+      return { page: f.page, nom: f.nom, duree: f.duree, type: f.type,
+               devise: f.devise || 'EUR', prixDuo: Number(f.prix) || 0,
+               prixSolo: Number(f.prixSolo) || 0 };
+    })
+  };
+}
+
+// Publie les tarifs. Trois voies, de la plus automatique a la plus manuelle :
+//  1. le serveur accepte l'ecriture (serve.py) -> rien a faire
+//  2. un dossier a ete connecte -> ecriture directe
+//  3. sinon -> l'appelant propose le telechargement
+function ecrireForfaits(cb) {
+  var txt = JSON.stringify(donneesForfaits(), null, 1);
+  fetch('../data/forfaits.json', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: txt
+  }).then(function (r) {
+    if (r.ok) { ETAT.ecriture = 'serveur'; cb(true, 'serveur'); return; }
+    ecrireViaDossier(txt, cb);
+  }).catch(function () { ecrireViaDossier(txt, cb); });
+}
+
+function ecrireViaDossier(txt, cb) {
+  if (!dirHandle) return cb(false);
+  dirHandle.requestPermission({ mode: 'readwrite' })
+    .then(function (etat) {
+      if (etat !== 'granted') throw new Error('refuse');
+      return dirHandle.getDirectoryHandle('data', { create: true });
+    })
+    .then(function (d) { return d.getFileHandle('forfaits.json', { create: true }); })
+    .then(function (f) { return f.createWritable(); })
+    .then(function (w) { return w.write(txt).then(function () { return w.close(); }); })
+    .then(function () { cb(true, 'dossier'); })
+    .catch(function () { cb(false); });
 }
 
 function publierForfaits() {
@@ -380,9 +495,16 @@ function renderList(key) {
     '<span class="spacer"></span><span class="count">' + rows.length + ' ' + mod.singulier + (rows.length > 1 ? 's' : '') + '</span></div>';
 
   if (key === 'forfaits') {
-    h += '<div class="alert a-ok" style="margin-bottom:16px"><div><b>Tarifs alignes sur le site.</b><br>' +
-      'Ils sont relus dans data/forfaits.json a chaque ouverture. Apres modification ici, ' +
-      'cliquez sur <b>Publier vers le site</b> et deposez le fichier obtenu dans le dossier data/.</div></div>';
+    if (ETAT.source !== 'fichier') {
+      h += '<div class="alert a-bad" style="margin-bottom:16px"><div><b>Tarifs non relies au site.</b><br>' +
+        'data/forfaits.json est introuvable ou illisible : les valeurs ci-dessous ne sont pas celles ' +
+        'que voient vos visiteurs. Lancez le site avec <b>python serve.py</b> puis rechargez.</div></div>';
+    } else if (ETAT.ecriture === 'aucune') {
+      h += '<div class="alert a-bad" style="margin-bottom:16px"><div><b>Lecture seule.</b><br>' +
+        'Les tarifs affiches sont bien ceux du site, mais vos modifications ne pourront pas etre publiees. ' +
+        'Lancez le site avec <b>python serve.py</b>.</div></div>';
+    }
+    // quand la liaison fonctionne, aucun bandeau : seuls les problemes en meritent un
   }
 
   if (!rows.length) {
@@ -404,6 +526,9 @@ function renderList(key) {
       }).join('') + '</tbody></table></div>';
   }
   $('#view').innerHTML = h;
+
+  var bc = $('#btnConnecter');
+  if (bc) bc.onclick = connecterDossier;
 
   var bp = $('#btnPublier');
   if (bp) bp.onclick = function () {
@@ -514,7 +639,23 @@ $('#modalForm').addEventListener('submit', function (e) {
   });
   if (formCtx.key === 'reservations') rec.fin = calcFin(rec.forfaitId, rec.debut);
   if (!formCtx.id) DB[formCtx.key].push(rec);
-  save(); closeForm(); toast('Enregistré'); render();
+  // closeForm() remet formCtx a null : on retient la collection avant
+  var cle = formCtx.key;
+  save(); closeForm(); render();
+  if (cle === 'forfaits') {
+    ecrireForfaits(function (ok) {
+      if (ok) { toast('Enregistré et publié sur le site'); render(); return; }
+      ETAT.ecriture = 'aucune';
+      render();
+      alert("LA MODIFICATION N'EST PAS EN LIGNE\n\n" +
+            "Elle est enregistree dans ce navigateur, mais le site n'a pas pu etre mis a jour.\n\n" +
+            "Cause la plus frequente : le site n'est pas lance avec serve.py.\n" +
+            "Dans un terminal, a la racine du site :\n\n    python serve.py\n\n" +
+            "Puis rechargez cette page.");
+    });
+  } else {
+    toast('Enregistré');
+  }
 });
 $('#modalClose').onclick = closeForm;
 $('#modalCancel').onclick = closeForm;
@@ -740,6 +881,16 @@ function renderParams() {
     'Il évite un regard par-dessus l\'épaule, rien de plus. N\'y mettez pas de données que la fuite rendrait grave.</div></div>' +
     '</div></div></div>';
 
+  h += '<div class="panel"><div class="panel-h"><h3>Dossier du site</h3></div><div class="panel-b">' +
+    (dirHandle
+      ? '<div class="alert a-ok"><div><b>Connecté.</b><br>Les tarifs sont écrits directement dans data/forfaits.json à chaque enregistrement.</div></div>'
+      : '<div class="alert a-warn"><div><b>Non connecté.</b><br>Sans ça, il faut publier puis déposer le fichier à la main.</div></div>') +
+    '<button class="btn btn-primary btn-sm" id="btnConnecter2" style="margin-top:14px">' +
+    (dirHandle ? 'Changer de dossier' : 'Connecter le dossier du site') + '</button>' +
+    '<p style="font-size:.8rem;color:var(--gray-500);margin-top:12px">Choisissez le dossier qui contient index.html. ' +
+    'L\'autorisation reste valable tant que vous ne la retirez pas dans le navigateur. Chrome ou Edge requis.</p>' +
+    '</div></div>';
+
   h += '<div class="panel"><div class="panel-h"><h3>État des données</h3></div><div class="panel-b"><div class="kpis" style="margin:0">' +
     Object.keys(SCHEMA).map(function (k) { return kpi(SCHEMA[k].label, DB[k].length, 'enregistrement' + (DB[k].length > 1 ? 's' : '')); }).join('') +
     '</div></div></div>';
@@ -749,6 +900,9 @@ function renderParams() {
     '<button class="btn btn-bad btn-sm" id="btnReset">Tout réinitialiser</button></div>';
 
   $('#view').innerHTML = h;
+
+  var bc2 = $('#btnConnecter2');
+  if (bc2) bc2.onclick = connecterDossier;
 
   $('#saveParams').onclick = function () {
     ['tauxEUR', 'tps', 'tvq', 'acompte', 'soldeJours', 'devisJours'].forEach(function (k) {
@@ -857,13 +1011,31 @@ function render() {
 window.addEventListener('hashchange', render);
 
 /* ---------- garde d'acces ---------- */
+// Verifie que le serveur accepte l'ecriture, en reecrivant les tarifs
+// a l'identique : aucune donnee n'est modifiee.
+function testerEcriture(cb) {
+  if (!DB.forfaits.length) { ETAT.ecriture = 'aucune'; return cb(false); }
+  fetch('../data/forfaits.json', { method: 'PUT', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(donneesForfaits(), null, 1) })
+    .then(function (r) {
+      ETAT.ecriture = r.ok ? 'serveur' : (dirHandle ? 'dossier' : 'aucune');
+      cb(r.ok);
+    })
+    .catch(function () {
+      ETAT.ecriture = dirHandle ? 'dossier' : 'aucune';
+      cb(false);
+    });
+}
+
 function unlock() {
   $('#gate').hidden = true;
   $('#app').hidden = false;
   $('#sideVer').textContent = 'v' + VERSION;
+  relireDossier(function (h) { if (h) { dirHandle = h; } });
   render();
-  syncForfaits(function (n) {
-    if (n > 0) { render(); toast(n + ' forfait' + (n > 1 ? 's' : '') + ' mis a jour depuis le site'); }
+  chargerForfaits(function () {
+    render();
+    testerEcriture(function () { render(); });
   });
 }
 $('#gateForm').addEventListener('submit', function (e) {
