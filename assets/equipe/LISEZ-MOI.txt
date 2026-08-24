@@ -1,0 +1,27 @@
+PHOTOS DE L'ÉQUIPE
+==================
+
+Dépose ici les portraits de l'équipe, avec EXACTEMENT ces noms de fichiers :
+
+  bruno.jpg            -> [DEJA EN PLACE] grande photo de la section "légende"
+  bruno-portrait.jpg   -> [DEJA EN PLACE] petite photo ronde (recadrage du visage
+                          fait a partir de bruno.jpg)
+  erik.jpg             -> Erik B.
+  axel.jpg             -> Axel F.
+  aelyne.jpg           -> Aélyne
+  adrien.jpg           -> Adrien
+  daniel.jpg           -> Daniel T.
+  victor.jpg           -> Victor N. (administration / comptabilité)
+
+FORMAT RECOMMANDÉ
+-----------------
+- Portrait vertical, ratio 4:5 (ex. 1000 x 1250 px)
+- Le visage plutôt dans le tiers supérieur (l'image est recadrée en "cover")
+- JPG optimisé, < 300 Ko par photo idéalement
+- bruno.jpg peut être carré (elle est affichée en cercle de 64 px)
+
+TANT QU'UNE PHOTO EST ABSENTE
+-----------------------------
+La page ne casse pas : un dégradé bleu nuit avec l'initiale de la personne
+s'affiche à la place. Dès que le fichier est déposé au bon nom, la photo
+apparaît automatiquement, sans rien changer dans le code.
