@@ -162,3 +162,6 @@ td.act{text-align:right;white-space:nowrap}
   .modal-body{grid-template-columns:1fr}
   .grid2{grid-template-columns:1fr}
 }
+
+/* Fiche client : lignes de tableau cliquables */
+tbody tr[data-open]:hover { background: var(--cream-200); }

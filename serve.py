@@ -25,8 +25,9 @@ RACINE = os.path.dirname(os.path.abspath(__file__))
 AUTORISES = {'/data/forfaits.json'}
 
 
-def _euros(n):
-    return format(int(n), ',d').replace(',', ' ') + ' \u20ac'
+def _montant(n, devise='CAD'):
+    symbole = '\u20ac' if devise == 'EUR' else '$'
+    return format(int(n), ',d').replace(',', ' ') + ' ' + symbole
 
 
 def propager(donnees):
@@ -47,19 +48,20 @@ def propager(donnees):
         avant = texte
         duo = int(f.get('prixDuo') or 0)
         solo = int(f.get('prixSolo') or 0)
+        dev = f.get('devise') or 'CAD'
 
         if duo:
             texte = re.sub(
                 r'(<div class="price-block" data-tarif="duo">\s*<strong>)[^<]*(</strong>)',
-                lambda m: m.group(1) + _euros(duo * 2) + m.group(2), texte)
+                lambda m: m.group(1) + _montant(duo * 2, dev) + m.group(2), texte)
             texte = re.sub(
                 r'(data-tarif="duo">.*?<em class="price-sub">)[^<]*(</em>)',
-                lambda m: m.group(1) + 'soit ' + _euros(duo) + ' par personne' + m.group(2),
+                lambda m: m.group(1) + 'soit ' + _montant(duo, dev) + ' par personne' + m.group(2),
                 texte, flags=re.S)
         if solo:
             texte = re.sub(
                 r'(<div class="price-block" data-tarif="solo">\s*<strong>)[^<]*(</strong>)',
-                lambda m: m.group(1) + _euros(solo) + m.group(2), texte)
+                lambda m: m.group(1) + _montant(solo, dev) + m.group(2), texte)
 
         if texte != avant:
             io.open(chemin, 'w', encoding='utf-8').write(texte)

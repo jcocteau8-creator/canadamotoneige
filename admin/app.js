@@ -70,7 +70,7 @@ function seed() {
     meta: { version: VERSION, pin: '0000', tauxEUR: 1.47, tps: 5, tvq: 9.975, acompte: 50, soldeJours: 90, devisJours: 20 },
     clients: [], reservations: [], compta: [], formations: [], heures: [], commandes: [], machines: [],
     forfaits: FORFAITS.map(function (f) {
-      return { id: uid(), nom: f[0], prix: f[1], prixSolo: f[2], devise: 'EUR', duree: f[3],
+      return { id: uid(), nom: f[0], prix: f[1], prixSolo: f[2], devise: 'CAD', duree: f[3],
                km: f[4], hebergement: f[5], type: f[6], page: f[7], capacite: 12, actif: true };
     }),
     employes: EQUIPE.map(function (e) {
@@ -127,7 +127,7 @@ function chargerForfaits(cb) {
         if (anc.id && anc.id !== src.page) remap[anc.id] = src.page;
         return {
           id: src.page, page: src.page, nom: src.nom, duree: src.duree, type: src.type,
-          devise: src.devise || 'EUR',
+          devise: src.devise || 'CAD',
           prix: Number(src.prixDuo) || 0, prixSolo: Number(src.prixSolo) || 0,
           km: anc.km || 0, hebergement: anc.hebergement || '',
           capacite: anc.capacite || 12, actif: anc.actif !== false
@@ -215,7 +215,7 @@ function donneesForfaits() {
     maj: today(),
     forfaits: DB.forfaits.filter(function (f) { return f.page; }).map(function (f) {
       return { page: f.page, nom: f.nom, duree: f.duree, type: f.type,
-               devise: f.devise || 'EUR', prixDuo: Number(f.prix) || 0,
+               devise: f.devise || 'CAD', prixDuo: Number(f.prix) || 0,
                prixSolo: Number(f.prixSolo) || 0 };
     })
   };
@@ -256,7 +256,7 @@ function publierForfaits() {
     maj: today(),
     forfaits: DB.forfaits.filter(function (f) { return f.page; }).map(function (f) {
       return { page: f.page, nom: f.nom, duree: f.duree, type: f.type,
-               devise: f.devise || 'EUR', prixDuo: Number(f.prix) || 0,
+               devise: f.devise || 'CAD', prixDuo: Number(f.prix) || 0,
                prixSolo: Number(f.prixSolo) || 0 };
     })
   };
@@ -265,7 +265,12 @@ function publierForfaits() {
 
 /* ---------- schema des modules ---------- */
 function refOptions(coll, labelFn) {
-  return function () { return DB[coll].map(function (r) { return { v: r.id, l: labelFn(r) }; }); };
+  var f = function () { return DB[coll].map(function (r) { return { v: r.id, l: labelFn(r) }; }); };
+  // on attache la collection et le libelle : les deduire du code source de la
+  // fonction, comme avant, ne pouvait pas fonctionner
+  f.coll = coll;
+  f.libelle = labelFn;
+  return f;
 }
 var nomClient = function (c) { return c.nom + (c.prenom ? ' ' + c.prenom : ''); };
 
@@ -292,7 +297,7 @@ var SCHEMA = {
       { k: 'formule', l: 'Formule', t: 'select', list: 1, filtre: 1, def: 'duo',
         opts: [{ v: 'duo', l: 'Motoneige en duo' }, { v: 'solo', l: 'Motoneige en solo' }] },
       { k: 'total', l: 'Montant total', t: 'money', req: 1, list: 1 },
-      { k: 'devise', l: 'Devise', t: 'select', opts: [{ v: 'EUR', l: 'Euro (€)' }, { v: 'CAD', l: 'Dollar canadien ($)' }], def: 'EUR' },
+      { k: 'devise', l: 'Devise', t: 'select', opts: [{ v: 'CAD', l: 'Dollar canadien ($)' }, { v: 'EUR', l: 'Euro (€)' }], def: 'CAD' },
       { k: 'verse', l: 'Déjà versé', t: 'money', list: 1, def: 0 },
       { k: 'statut', l: 'Statut', t: 'select', list: 1, filtre: 1, def: 'devis',
         opts: [{ v: 'devis', l: 'Devis envoyé' }, { v: 'confirmee', l: 'Confirmée' }, { v: 'soldee', l: 'Soldée' }, { v: 'terminee', l: 'Terminée' }, { v: 'annulee', l: 'Annulée' }] },
@@ -301,6 +306,7 @@ var SCHEMA = {
     ]
   },
   clients: {
+    detail: 'renderClient',
     label: 'Clients', groupe: 'Exploitation', icon: 'M16 20v-2a4 4 0 00-8 0v2M12 12a4 4 0 100-8 4 4 0 000 8',
     singulier: 'client', tri: 'nom',
     champs: [
@@ -326,7 +332,7 @@ var SCHEMA = {
       { k: 'km', l: 'Kilomètres', t: 'number', list: 1 },
       { k: 'prix', l: 'Prix en duo (par pers.)', t: 'money', req: 1, list: 1, hint: '0 si la formule duo n\'est pas proposée' },
       { k: 'prixSolo', l: 'Prix en solo (par pers.)', t: 'money', list: 1 },
-      { k: 'devise', l: 'Devise', t: 'select', def: 'EUR', opts: [{ v: 'EUR', l: 'Euro (€)' }, { v: 'CAD', l: 'Dollar canadien ($)' }] },
+      { k: 'devise', l: 'Devise', t: 'select', def: 'CAD', opts: [{ v: 'CAD', l: 'Dollar canadien ($)' }, { v: 'EUR', l: 'Euro (€)' }] },
       { k: 'capacite', l: 'Capacité max', t: 'number', def: 12 },
       { k: 'hebergement', l: 'Hébergement', t: 'text', full: 1 },
       { k: 'page', l: 'Page du site', t: 'text', full: 1, hint: 'Fichier correspondant, ex. raid-escapade.html' },
@@ -454,8 +460,11 @@ function cellHTML(mod, c, row) {
   }
   return esc(v == null || v === '' ? '—' : v);
 }
-function refColl(c) { var s = String(c.opts); var m = s.match(/refOptions\('(\w+)'/); return m ? m[1] : ''; }
-function refLabel(c, r) { return r.nom ? (r.nom + (r.prenom ? ' ' + r.prenom : '')) : r.id; }
+function refColl(c) { return (typeof c.opts === 'function' && c.opts.coll) || ''; }
+function refLabel(c, r) {
+  if (typeof c.opts === 'function' && c.opts.libelle) return c.opts.libelle(r);
+  return r.nom ? (r.nom + (r.prenom ? ' ' + r.prenom : '')) : r.id;
+}
 
 /* ---------- vue liste ---------- */
 var state = {};
@@ -517,7 +526,8 @@ function renderList(key) {
         return '<th' + num + ' data-tri="' + c.k + '">' + esc(c.l) + ar + '</th>';
       }).join('') + '<th class="num">Actions</th></tr></thead><tbody>' +
       rows.map(function (r) {
-        return '<tr>' + cols.map(function (c) {
+        return '<tr' + (mod.detail ? ' data-open="' + r.id + '" style="cursor:pointer"' : '') + '>' +
+          cols.map(function (c) {
           var num = (c.t === 'money' || c.t === 'number') ? ' class="num"' : '';
           return '<td' + num + '>' + cellHTML(mod, c, r) + '</td>';
         }).join('') +
@@ -543,13 +553,71 @@ function renderList(key) {
   $$('[data-filtre]').forEach(function (s) { s.onchange = function () { st.filtres[this.dataset.filtre] = this.value; renderList(key); }; });
   $$('[data-tri]').forEach(function (t) { t.onclick = function () {
     var k = this.dataset.tri; st.sens = (st.tri === k) ? -st.sens : 1; st.tri = k; renderList(key); }; });
-  $$('[data-edit]').forEach(function (b) { b.onclick = function () { openForm(key, this.dataset.edit); }; });
-  $$('[data-del]').forEach(function (b) { b.onclick = function () {
+  $$('[data-open]').forEach(function (tr) {
+    tr.onclick = function (e) {
+      if (e.target.closest('button')) return;  // les icones gardent leur role
+      location.hash = '#/' + key + '/' + this.dataset.open;
+    };
+  });
+  $$('[data-edit]').forEach(function (b) {
+    b.onclick = function (e) { e.stopPropagation(); openForm(key, this.dataset.edit); };
+  });
+  $$('[data-del]').forEach(function (b) { b.onclick = function (e) {
+    e.stopPropagation();
     var id = this.dataset.del;
     if (!confirm('Supprimer définitivement ' + art(key, 'ce') + mod.singulier + ' ?')) return;
     DB[key] = DB[key].filter(function (r) { return r.id !== id; });
+    if (key === 'reservations') retirerRevenuLie(id);
     save(); toast(mod.singulier[0].toUpperCase() + mod.singulier.slice(1) + ' supprimé'); render();
   }; });
+}
+
+/* ---------- le verse d'une reservation devient un revenu ---------- */
+// Sans ca, marquer une reservation "versee" ne changeait rien au chiffre
+// d'affaires : il fallait ressaisir le meme montant a la main dans le
+// module Comptabilite. Chaque reservation est reliee a au plus une
+// ecriture de revenu (via resaId), maintenue a jour automatiquement.
+function synchroniserRevenu(rec) {
+  var montant = Number(rec.verse) || 0;
+  var existant = DB.compta.filter(function (e) { return e.resaId === rec.id; })[0];
+
+  if (montant <= 0) {
+    if (existant) DB.compta = DB.compta.filter(function (e) { return e !== existant; });
+    return;
+  }
+
+  var c = DB.clients.filter(function (x) { return x.id === rec.clientId; })[0];
+  var f = DB.forfaits.filter(function (x) { return x.id === rec.forfaitId; })[0];
+  var libelle = 'Versement — ' + (rec.ref || rec.id) +
+    (c ? ' · ' + nomClient(c) : '') + (f ? ' · ' + f.nom : '');
+
+  if (existant) {
+    existant.montantHT = montant;
+    existant.devise = rec.devise || 'CAD';
+    existant.libelle = libelle;
+    existant.piece = rec.ref || '';
+  } else {
+    DB.compta.push({
+      id: uid(), resaId: rec.id, date: rec.debut || today(), type: 'revenu',
+      categorie: 'sejour', libelle: libelle, montantHT: montant,
+      taxes: false, devise: rec.devise || 'CAD', moyen: 'virement', piece: rec.ref || ''
+    });
+  }
+}
+function retirerRevenuLie(id) {
+  DB.compta = DB.compta.filter(function (e) { return e.resaId !== id; });
+}
+// Rattrape les reservations enregistrees avant l'ajout de cette synchro :
+// sans ca, un versement deja saisi restait invisible du chiffre d'affaires
+// jusqu'a la prochaine modification manuelle de sa fiche.
+function rattraperRevenus() {
+  var n = 0;
+  DB.reservations.forEach(function (rec) {
+    var deja = DB.compta.some(function (e) { return e.resaId === rec.id; });
+    if (!deja && Number(rec.verse) > 0) { synchroniserRevenu(rec); n++; }
+  });
+  if (n) save();
+  return n;
 }
 
 /* ---------- calcul du retour d'apres la duree du forfait ---------- */
@@ -612,7 +680,7 @@ function brancherReservation(rec) {
         ? 'Forfait de ' + (parseInt(f.duree, 10) || '?') + ' jours \u2192 retour le ' + dateFR(fin)
         : 'Le retour se calcule tout seul \u00e0 partir de la dur\u00e9e du forfait.';
     }
-    if (f && devSel) devSel.value = f.devise || 'EUR';
+    if (f && devSel) devSel.value = f.devise || 'CAD';
     if (f && tIn && !manuel) {
       var solo = foSel && foSel.value === 'solo';
       var pu = solo ? (Number(f.prixSolo) || 0) : (Number(f.prix) || 0);
@@ -637,7 +705,10 @@ $('#modalForm').addEventListener('submit', function (e) {
     else if (c.t === 'money' || c.t === 'number') rec[c.k] = el.value === '' ? 0 : parseFloat(el.value);
     else rec[c.k] = el.value;
   });
-  if (formCtx.key === 'reservations') rec.fin = calcFin(rec.forfaitId, rec.debut);
+  if (formCtx.key === 'reservations') {
+    rec.fin = calcFin(rec.forfaitId, rec.debut);
+    synchroniserRevenu(rec);
+  }
   if (!formCtx.id) DB[formCtx.key].push(rec);
   // closeForm() remet formCtx a null : on retient la collection avant
   var cle = formCtx.key;
@@ -702,6 +773,106 @@ function alertes() {
   return out;
 }
 
+/* ---------- fiche client ---------- */
+window.renderClient = renderClient;
+function renderClient(id) {
+  var c = DB.clients.filter(function (x) { return x.id === id; })[0];
+  if (!c) { location.hash = '#/clients'; return; }
+
+  $('#pageTitle').textContent = nomClient(c);
+  $('#topActions').innerHTML =
+    '<button class="btn btn-ghost btn-sm" id="btnRetour">&larr; Tous les clients</button>' +
+    '<button class="btn btn-primary btn-sm" id="btnModifier">Modifier la fiche</button>';
+
+  var resas = DB.reservations.filter(function (r) { return r.clientId === id; })
+    .sort(function (a, b) { return String(b.debut).localeCompare(String(a.debut)); });
+  var cmds = DB.commandes.filter(function (o) { return o.clientId === id; })
+    .sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+
+  // Si toutes les reservations sont dans la meme devise, on l'affiche telle
+  // quelle : convertir 5 000 EUR en 7 350 CAD sans le dire prete a confusion.
+  var devises = {};
+  resas.forEach(function (r) { if (r.statut !== 'annulee') devises[r.devise || 'CAD'] = 1; });
+  var seule = Object.keys(devises).length === 1 ? Object.keys(devises)[0] : null;
+
+  var facture = 0, du = 0, pax = 0;
+  resas.forEach(function (r) {
+    if (r.statut === 'annulee') return;
+    var t = Number(r.total) || 0, v = Number(r.verse) || 0;
+    if (seule) { facture += t; du += Math.max(0, t - v); }
+    else {
+      facture += tauxCAD(t, r.devise);
+      du += tauxCAD(Math.max(0, t - v), r.devise);
+    }
+    pax += Number(r.pax) || 0;
+  });
+  var noteDevise = seule ? 'Hors réservations annulées'
+    : 'Devises mêlées, converti en dollars (taux ' + DB.meta.tauxEUR + ')';
+  var actives = resas.filter(function (r) { return r.statut !== 'annulee'; }).length;
+
+  var champ = SCHEMA.clients.champs;
+  function lib(k) { var f = champ.filter(function (x) { return x.k === k; })[0]; return f ? labelOpt(f, c[k]) : c[k]; }
+
+  var h = '<div class="kpis">' +
+    kpi('Séjours réservés', actives, pax + ' participant' + (pax > 1 ? 's' : '') + ' au total') +
+    kpi('Total facturé', money(facture, seule || 'CAD'), noteDevise) +
+    kpi('Reste à encaisser', money(du, seule || 'CAD'), du > 0 ? 'Solde en attente' : 'Tout est réglé', du > 0 ? 'warn' : 'ok') +
+    kpi('Commandes boutique', cmds.length, cmds.length ? 'Voir plus bas' : 'Aucune à ce jour') +
+    '</div>';
+
+  h += '<div class="grid2"><div class="panel"><div class="panel-h"><h3>Coordonnées</h3></div><div class="panel-b">' +
+    ligne('Nom', esc(c.nom || '—')) + ligne('Prénom', esc(c.prenom || '—')) +
+    ligne('Courriel', c.email ? esc(c.email) : '—') +
+    ligne('Téléphone', c.tel ? esc(c.tel) : '—') +
+    ligne('Ville', esc(c.ville || '—')) + ligne('Pays', esc(lib('pays') || '—')) +
+    ligne('Provenance', esc(lib('origine') || '—')) +
+    ligne('Fiche créée le', dateFR(c.cree)) +
+    '</div></div>';
+
+  h += '<div class="panel"><div class="panel-h"><h3>Notes</h3></div><div class="panel-b">' +
+    (c.notes ? '<p style="white-space:pre-wrap;font-size:.9rem">' + esc(c.notes) + '</p>'
+             : '<p style="color:var(--gray-500);font-size:.88rem">Aucune note. Utilisez « Modifier la fiche » pour en ajouter.</p>') +
+    '</div></div></div>';
+
+  h += '<div class="panel"><div class="panel-h"><h3>Réservations</h3><span class="count">' + resas.length + '</span></div>';
+  h += resas.length
+    ? '<div class="tw"><table><thead><tr><th>Référence</th><th>Forfait</th><th>Départ</th><th>Retour</th>' +
+      '<th class="num">Pers.</th><th class="num">Montant</th><th class="num">Versé</th><th>Statut</th></tr></thead><tbody>' +
+      resas.map(function (r) {
+        var f = DB.forfaits.filter(function (x) { return x.id === r.forfaitId; })[0];
+        var st = SCHEMA.reservations.champs.filter(function (x) { return x.k === 'statut'; })[0];
+        return '<tr><td>' + esc(r.ref || '—') + '</td><td>' + esc(f ? f.nom : '—') + '</td>' +
+          '<td>' + dateFR(r.debut) + '</td><td>' + dateFR(r.fin) + '</td>' +
+          '<td class="num">' + (r.pax || 0) + '</td>' +
+          '<td class="num">' + money(r.total, r.devise) + '</td>' +
+          '<td class="num">' + money(r.verse, r.devise) + '</td>' +
+          '<td>' + cellHTML(SCHEMA.reservations, st, r) + '</td></tr>';
+      }).join('') + '</tbody></table></div>'
+    : '<div class="panel-b" style="color:var(--gray-500);font-size:.88rem">Aucune réservation pour ce client.</div>';
+  h += '</div>';
+
+  if (cmds.length) {
+    h += '<div class="panel"><div class="panel-h"><h3>Commandes boutique</h3><span class="count">' + cmds.length + '</span></div>' +
+      '<div class="tw"><table><thead><tr><th>Date</th><th>Article</th><th>Couleur / taille</th>' +
+      '<th class="num">Qté</th><th class="num">Total</th><th>Statut</th></tr></thead><tbody>' +
+      cmds.map(function (o) {
+        var st = SCHEMA.commandes.champs.filter(function (x) { return x.k === 'statut'; })[0];
+        return '<tr><td>' + dateFR(o.date) + '</td><td>' + esc(o.article || '—') + '</td>' +
+          '<td>' + esc(o.variante || '—') + '</td><td class="num">' + (o.qte || 0) + '</td>' +
+          '<td class="num">' + money(o.total) + '</td>' +
+          '<td>' + cellHTML(SCHEMA.commandes, st, o) + '</td></tr>';
+      }).join('') + '</tbody></table></div></div>';
+  }
+
+  $('#view').innerHTML = h;
+  $('#btnRetour').onclick = function () { location.hash = '#/clients'; };
+  $('#btnModifier').onclick = function () { openForm('clients', id); };
+}
+
+function ligne(l, v) {
+  return '<div class="split"><span style="color:var(--gray-500)">' + esc(l) + '</span><b>' + v + '</b></div>';
+}
+
 /* ---------- tableau de bord ---------- */
 function renderDash() {
   $('#topActions').innerHTML = '';
@@ -723,7 +894,7 @@ function renderDash() {
     kpi('Revenus du mois', money(revMois), 'Toutes taxes comprises, en dollars') +
     kpi('Dépenses du mois', money(depMois), 'Toutes taxes comprises') +
     kpi('Résultat du mois', money(revMois - depMois), 'Revenus moins dépenses', revMois - depMois >= 0 ? 'ok' : 'bad') +
-    kpi('Reste à encaisser', money(encaisser), 'Sur les réservations non soldées', encaisser > 0 ? 'warn' : 'ok') +
+    kpi('Reste à encaisser', money(encaisser), 'Non soldé, converti en dollars', encaisser > 0 ? 'warn' : 'ok') +
     kpi('Départs à venir', aVenir.length, pax + ' participant' + (pax > 1 ? 's' : '') + ' attendus') +
     kpi('Devis en attente', devis, 'Validité : ' + DB.meta.devisJours + ' jours', devis ? 'warn' : '') +
     '</div>';
@@ -992,8 +1163,11 @@ function buildNav() {
 }
 
 function current() {
-  var k = (location.hash || '#/dashboard').replace('#/', '');
+  var k = (location.hash || '#/dashboard').replace('#/', '').split('/')[0];
   return VUES.filter(function (v) { return v.k === k; })[0] ? k : 'dashboard';
+}
+function currentId() {
+  return (location.hash || '').replace('#/', '').split('/')[1] || null;
 }
 function render() {
   var k = current();
@@ -1002,7 +1176,10 @@ function render() {
   var v = VUES.filter(function (x) { return x.k === k; })[0];
   var mod = SCHEMA[k];
   $('#pageTitle').textContent = v.l || (mod ? mod.label : '');
-  if (v.fn) v.fn(); else renderList(k);
+  var id = currentId();
+  if (id && mod && mod.detail) window[mod.detail] ? window[mod.detail](id) : renderClient(id);
+  else if (v.fn) v.fn();
+  else renderList(k);
   $$('[data-new]').forEach(function (b) { b.onclick = function () { openForm(this.dataset.new); }; });
   $$('[data-csv]').forEach(function (b) { b.onclick = function () { exportCSV(this.dataset.csv); }; });
   $('.side').classList.remove('open');
@@ -1034,7 +1211,9 @@ function unlock() {
   relireDossier(function (h) { if (h) { dirHandle = h; } });
   render();
   chargerForfaits(function () {
+    var n = rattraperRevenus();
     render();
+    if (n) toast(n + ' versement' + (n > 1 ? 's' : '') + ' ajouté' + (n > 1 ? 's' : '') + ' à la comptabilité');
     testerEcriture(function () { render(); });
   });
 }

@@ -331,8 +331,12 @@ if (track && dotsWrap) {
   var base = location.pathname.replace(/\/$/, '/index.html');
   var page = base.slice(base.lastIndexOf('/') + 1) || 'index.html';
 
-  function eur(n) {
-    return n.toLocaleString('fr-FR').replace(/ |,/g, ' ') + ' €';
+  // Le symbole suit la devise du forfait (data/forfaits.json), pas un
+  // choix fige : sans ca, un forfait passe en CAD continuait d'afficher
+  // le prix avec un € colle dessus par ce script.
+  function montant(n, devise) {
+    var symbole = devise === 'EUR' ? '€' : '$';
+    return n.toLocaleString('fr-FR').replace(/ |,/g, ' ') + ' ' + symbole;
   }
 
   fetch('data/forfaits.json', { cache: 'no-store' })
@@ -349,10 +353,10 @@ if (track && dotsWrap) {
           var fort = b.querySelector('strong'), sub = b.querySelector('.price-sub');
           if (b.getAttribute('data-tarif') === 'duo') {
             if (!moi.prixDuo) return;
-            fort.textContent = eur(moi.prixDuo * 2);
-            if (sub) sub.textContent = 'soit ' + eur(moi.prixDuo) + ' par personne';
+            fort.textContent = montant(moi.prixDuo * 2, moi.devise);
+            if (sub) sub.textContent = 'soit ' + montant(moi.prixDuo, moi.devise) + ' par personne';
           } else if (moi.prixSolo) {
-            fort.textContent = eur(moi.prixSolo);
+            fort.textContent = montant(moi.prixSolo, moi.devise);
           }
         });
       }

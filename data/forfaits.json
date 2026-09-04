@@ -6,117 +6,117 @@
    "nom": "Mix Découverte",
    "duree": "3 jours · 2 nuits",
    "type": "mix",
-   "devise": "EUR",
-   "prixDuo": 1150,
-   "prixSolo": 1500
+   "devise": "CAD",
+   "prixDuo": 1690,
+   "prixSolo": 2205
   },
   {
    "page": "forfait-mix-evasion.html",
    "nom": "Mix Évasion",
    "duree": "5 jours · 4 nuits",
    "type": "mix",
-   "devise": "EUR",
-   "prixDuo": 2100,
-   "prixSolo": 2500
+   "devise": "CAD",
+   "prixDuo": 3087,
+   "prixSolo": 3675
   },
   {
    "page": "forfait-mix-express.html",
    "nom": "Mix Express",
    "duree": "2 jours · 1 nuit",
    "type": "mix",
-   "devise": "EUR",
-   "prixDuo": 750,
-   "prixSolo": 900
+   "devise": "CAD",
+   "prixDuo": 1102,
+   "prixSolo": 1323
   },
   {
    "page": "forfait-mix-parfait.html",
    "nom": "Mix Parfait",
    "duree": "7 jours · 6 nuits",
    "type": "mix",
-   "devise": "EUR",
-   "prixDuo": 2600,
-   "prixSolo": 3250
+   "devise": "CAD",
+   "prixDuo": 3822,
+   "prixSolo": 4778
   },
   {
    "page": "forfait-mix-ultime.html",
    "nom": "Mix Ultime",
    "duree": "9 jours · 8 nuits",
    "type": "mix",
-   "devise": "EUR",
-   "prixDuo": 3250,
-   "prixSolo": 3900
+   "devise": "CAD",
+   "prixDuo": 4778,
+   "prixSolo": 5733
   },
   {
    "page": "raid-aventure-nordique.html",
    "nom": "L'Aventure Nordique",
    "duree": "7 jours · 6 nuits",
    "type": "raid",
-   "devise": "EUR",
-   "prixDuo": 2500,
-   "prixSolo": 3200
+   "devise": "CAD",
+   "prixDuo": 3675,
+   "prixSolo": 4704
   },
   {
    "page": "raid-aventure-ultime.html",
    "nom": "L'Aventure Ultime",
    "duree": "9 jours · 8 nuits",
    "type": "raid",
-   "devise": "EUR",
-   "prixDuo": 3000,
-   "prixSolo": 3750
+   "devise": "CAD",
+   "prixDuo": 4410,
+   "prixSolo": 5512
   },
   {
    "page": "raid-defi-hors-piste.html",
    "nom": "Défi Hors-Piste",
    "duree": "7 jours · 6 nuits",
    "type": "raid",
-   "devise": "EUR",
+   "devise": "CAD",
    "prixDuo": 0,
-   "prixSolo": 3500
+   "prixSolo": 5145
   },
   {
    "page": "raid-escapade.html",
    "nom": "L'Escapade",
    "duree": "3 jours · 2 nuits",
    "type": "raid",
-   "devise": "EUR",
-   "prixDuo": 1100,
-   "prixSolo": 1600
+   "devise": "CAD",
+   "prixDuo": 1617,
+   "prixSolo": 2352
   },
   {
    "page": "raid-evasion-nature.html",
    "nom": "L'Évasion en Nature",
    "duree": "5 jours · 4 nuits",
    "type": "raid",
-   "devise": "EUR",
-   "prixDuo": 1900,
-   "prixSolo": 2700
+   "devise": "CAD",
+   "prixDuo": 2793,
+   "prixSolo": 3969
   },
   {
    "page": "raid-initiation-econo.html",
    "nom": "L'Initiation Écono",
    "duree": "7 jours · 6 nuits",
    "type": "raid",
-   "devise": "EUR",
-   "prixDuo": 2300,
-   "prixSolo": 3000
+   "devise": "CAD",
+   "prixDuo": 3381,
+   "prixSolo": 4410
   },
   {
    "page": "raid-mise-en-bouche.html",
    "nom": "La Mise en Bouche",
    "duree": "2 jours · 1 nuit",
    "type": "raid",
-   "devise": "EUR",
-   "prixDuo": 600,
-   "prixSolo": 10000
+   "devise": "CAD",
+   "prixDuo": 882,
+   "prixSolo": 1470
   },
   {
    "page": "raid-periple-sportif.html",
    "nom": "Le Périple du Sportif",
    "duree": "7 jours · 6 nuits",
    "type": "raid",
-   "devise": "EUR",
-   "prixDuo": 2700,
-   "prixSolo": 3250
+   "devise": "CAD",
+   "prixDuo": 3969,
+   "prixSolo": 4778
   }
  ]
 }
