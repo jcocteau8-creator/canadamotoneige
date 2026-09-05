@@ -1830,17 +1830,7 @@ a { text-decoration: none; color: inherit; }
 
 a[data-copy] { cursor: pointer; }
 
-/* Menu a 7 items : on resserre avant que la barre ne deborde.
-   Borne basse a 961px pour ne pas toucher au menu deroulant mobile. */
-@media (min-width: 961px) and (max-width: 1300px) {
-  .main-nav { gap: 15px; }
-  .main-nav a { font-size: 0.68rem; letter-spacing: 0.02em; }
-  .header-cta { gap: 16px; }
-  .header-cta .btn-primary { padding: 13px 22px; font-size: 0.8rem; }
-}
-@media (min-width: 961px) and (max-width: 1160px) {
-  .header-phone { display: none; }
-}
+
 
 /* ===================================================
    BOUTIQUE — fiche produit
@@ -2090,14 +2080,25 @@ a[data-copy] { cursor: pointer; }
   .pd-specs li { grid-template-columns: 110px 1fr; }
 }
 
-/* Menu a 8 items : on resserre plus tot qu'avant */
-@media (min-width: 961px) and (max-width: 1420px) {
+/* Menu desktop a 8 items.
+   Le conteneur du site est plafonne a 1240px (var(--container-w)) : au-dela
+   d'environ 1320px de fenetre, la boite interieure du header ne grandit
+   plus jamais (elle reste a 1160px de contenu). Revenir a une police et
+   des espacements "grand ecran" au-dela d'un certain seuil n'a donc aucun
+   sens ici : ca ne redonne pas de place, ca en prend plus dans une boite
+   qui n'a pas bouge. Ce reglage compact s'applique donc en permanence des
+   que le menu deroulant mobile n'est plus utilise (>=961px), sans borne
+   haute. */
+@media (min-width: 961px) {
   .main-nav { gap: 14px; }
   .main-nav a { font-size: 0.67rem; letter-spacing: 0.02em; }
   .header-cta { gap: 14px; }
   .header-cta .btn-primary { padding: 13px 20px; font-size: 0.78rem; }
 }
-@media (min-width: 961px) and (max-width: 1270px) {
+/* Sous ce seuil, le numero de telephone est la premiere chose a ceder :
+   c'est le seul element du header qui a un role redondant avec le bouton
+   d'appel a l'action. */
+@media (min-width: 961px) and (max-width: 1100px) {
   .header-phone { display: none; }
 }
 
