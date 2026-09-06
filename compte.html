@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon compte | Canada Motoneige</title>
+<meta name="description" content="Créez un compte pour réserver un raid ou un séjour sans payer en ligne : nous préparons votre devis, vous confirmez ensuite.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://www.canadamotoneige.com/compte.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=23">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+</head>
+<body>
+
+<header class="site-header" id="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <img src="assets/logo.png" alt="Canada Motoneige" class="logo-img">
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <a href="services.html">Services</a>
+      <a href="forfaits.html">Forfaits</a>
+      <a href="equipement.html">Équipement</a>
+      <a href="pourquoi-nous.html">Pourquoi nous</a>
+      <a href="notre-equipe.html">Notre équipe</a>
+      <a href="avis.html">Avis</a>
+      <a href="boutique.html">Boutique</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-cta">
+      <a href="tel:+18192090986" class="header-phone">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.9 21 3 13.1 3 3.4c0-.6.4-1 1-1h3.4c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8z" fill="currentColor"/></svg>
+        +1 819 209-0986
+      </a>
+      <a href="compte.html" class="btn btn-primary">Mon compte</a>
+    </div>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<section class="page-hero" style="background-image:url('assets/photos/sunset-lac.jpg'); min-height:38vh;">
+  <div class="container page-hero-content reveal">
+    <p class="eyebrow">Mon compte</p>
+    <h1>Réservez sans payer</h1>
+    <p class="page-hero-sub">Créez un compte, décrivez votre projet : nous préparons un devis et vous confirmez ensuite. Aucun paiement n'est demandé à cette étape.</p>
+  </div>
+</section>
+
+<!-- ===== NON CONFIGURE (avant la mise en place de Supabase) ===== -->
+<section class="section" id="etatNonConfigure" hidden>
+  <div class="container" style="max-width:640px; text-align:center;">
+    <p class="section-eyebrow">Bientôt disponible</p>
+    <h2 class="section-title" style="margin:0 auto 18px;">Les comptes clients arrivent</h2>
+    <p class="lead" style="margin:0 auto 32px;">Cette fonctionnalité est en cours de mise en place. En attendant, décrivez-nous votre projet directement.</p>
+    <a href="contact.html" class="btn btn-primary btn-lg">Nous contacter</a>
+  </div>
+</section>
+
+<!-- ===== CONNEXION / INSCRIPTION ===== -->
+<section class="section" id="etatDeconnecte" hidden>
+  <div class="container">
+    <div class="compte-grid">
+
+      <div class="compte-panel reveal">
+        <div class="compte-tabs">
+          <button type="button" class="compte-tab active" data-tab="connexion">Se connecter</button>
+          <button type="button" class="compte-tab" data-tab="inscription">Créer un compte</button>
+        </div>
+
+        <form class="contact-form compte-form active" id="formConnexion" data-tab-panel="connexion">
+          <label>Courriel
+            <input type="email" name="email" required autocomplete="email">
+          </label>
+          <label>Mot de passe
+            <input type="password" name="password" required autocomplete="current-password">
+          </label>
+          <p class="compte-erreur" data-for="formConnexion"></p>
+          <button type="submit" class="btn btn-primary">Se connecter</button>
+        </form>
+
+        <form class="contact-form compte-form" id="formInscription" data-tab-panel="inscription" hidden>
+          <div class="form-row">
+            <label>Prénom
+              <input type="text" name="prenom" required autocomplete="given-name">
+            </label>
+            <label>Nom
+              <input type="text" name="nom" required autocomplete="family-name">
+            </label>
+          </div>
+          <label>Courriel
+            <input type="email" name="email" required autocomplete="email">
+          </label>
+          <label>Mot de passe
+            <input type="password" name="password" required minlength="6" autocomplete="new-password">
+            <span class="compte-hint">6 caractères minimum.</span>
+          </label>
+          <p class="compte-erreur" data-for="formInscription"></p>
+          <button type="submit" class="btn btn-primary">Créer mon compte</button>
+        </form>
+      </div>
+
+      <div class="compte-aside reveal">
+        <p class="section-eyebrow">Pourquoi un compte ?</p>
+        <h2 class="section-title" style="font-size:1.6rem;">Ça change quoi pour vous ?</h2>
+        <ul class="compte-points">
+          <li><strong>Aucun paiement ici.</strong> Vous décrivez le forfait qui vous intéresse, on revient vers vous avec un devis.</li>
+          <li><strong>Un historique.</strong> Retrouvez toutes vos demandes et leur statut au même endroit.</li>
+          <li><strong>La boutique reste à part.</strong> Une commande de vêtements est mise de côté pour vous, le paiement s'organise directement avec nous.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== TABLEAU DE BORD (connecte) ===== -->
+<section class="section" id="etatConnecte" hidden>
+  <div class="container">
+    <div class="compte-head reveal">
+      <div>
+        <p class="section-eyebrow">Bienvenue</p>
+        <h2 class="section-title" id="compteBonjour" style="margin-bottom:0;">—</h2>
+      </div>
+      <button type="button" class="btn btn-ghost" id="btnDeconnexion">Se déconnecter</button>
+    </div>
+
+    <!-- Nouvelle demande -->
+    <div class="panel-compte reveal" id="blocNouvelleDemande">
+      <h3>Faire une nouvelle demande</h3>
+      <p class="compte-sub">Choisissez un forfait, indiquez vos dates : aucune carte bancaire, juste une demande de devis.</p>
+      <form id="formReservation" class="contact-form">
+        <div class="form-row">
+          <label>Forfait
+            <select name="forfait" id="selectForfait" required></select>
+          </label>
+          <label>Formule
+            <select name="formule" required>
+              <option value="duo">En duo</option>
+              <option value="solo">En solo</option>
+            </select>
+          </label>
+        </div>
+        <div class="form-row">
+          <label>Date de départ souhaitée
+            <input type="date" name="debut" required>
+          </label>
+          <label>Nombre de participants
+            <input type="number" name="pax" min="1" max="20" value="2" required>
+          </label>
+        </div>
+        <label>Message (optionnel)
+          <textarea name="message" rows="3" placeholder="Dates flexibles, questions particulières, etc."></textarea>
+        </label>
+        <p class="compte-erreur" data-for="formReservation"></p>
+        <p class="compte-ok" data-for="formReservation"></p>
+        <button type="submit" class="btn btn-primary">Envoyer ma demande de devis</button>
+      </form>
+    </div>
+
+    <!-- Mes reservations -->
+    <div class="panel-compte reveal">
+      <h3>Mes demandes de forfait</h3>
+      <div class="tw-compte">
+        <table id="tableReservations">
+          <thead><tr><th>Forfait</th><th>Formule</th><th>Départ</th><th class="num">Pers.</th><th>Statut</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <p class="compte-vide" id="videReservations">Aucune demande pour le moment.</p>
+      </div>
+    </div>
+
+    <!-- Mes commandes boutique -->
+    <div class="panel-compte reveal">
+      <h3>Mes commandes boutique</h3>
+      <p class="compte-sub">Le paiement de la boutique n'est pas encore en ligne : nous vous contactons pour l'organiser (virement, sur place, etc.).</p>
+      <div class="tw-compte">
+        <table id="tableCommandes">
+          <thead><tr><th>Article</th><th>Détail</th><th class="num">Qté</th><th>Statut</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <p class="compte-vide" id="videCommandes">Aucune commande pour le moment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <a href="index.html" class="logo logo-footer">
+        <img src="assets/logo.png" alt="Canada Motoneige" class="logo-img">
+      </a>
+      <p>Voyages en motoneige au cœur des Hautes-Laurentides, Québec.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <a href="services.html">Services</a>
+      <a href="forfaits.html">Forfaits</a>
+      <a href="equipement.html">Équipement</a>
+      <a href="boutique.html">Boutique</a>
+      <a href="pourquoi-nous.html">Pourquoi nous</a>
+      <a href="faq.html">Questions fréquentes</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <a href="tel:+18192090986">+1 819 209-0986</a>
+      <a href="mailto:info@canadamotoneige.com">info@canadamotoneige.com</a>
+    </div>
+    <div class="footer-col">
+      <h4>Suivez-nous</h4>
+      <div class="social-links">
+        <a href="https://www.facebook.com/CanadaMotoneige" target="_blank" rel="noopener" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M14 9h3V6h-3c-1.7 0-3 1.3-3 3v2H9v3h2v6h3v-6h3l1-3h-4v-2c0-.6.4-1 1-1z" fill="currentColor"/></svg></a>
+        <a href="https://www.instagram.com/canada_motoneige" target="_blank" rel="noopener" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>© 2026 Canada Motoneige. Tous droits réservés.</p>
+    <p><a href="conditions-generales.html">Conditions générales</a> · <a href="politique-confidentialite.html">Politique de confidentialité</a></p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="assets/js/supabase-config.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="script.js?v=23"></script>
+<script src="assets/js/compte.js?v=23"></script>
+</body>
+</html>

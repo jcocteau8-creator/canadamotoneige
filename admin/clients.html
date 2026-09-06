@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Réservations & commandes | Canada Motoneige</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css?v=1">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon.png">
+</head>
+<body>
+
+<!-- Vraie authentification (compte Supabase), pas le code local du reste
+     du back-office : ces donnees viennent de vrais clients. -->
+<div class="gate" id="gate">
+  <form class="gate-box" id="gateForm">
+    <img src="../assets/logo.png" alt="Canada Motoneige" class="gate-logo">
+    <h1>Réservations &amp; commandes</h1>
+    <p id="gateSous">Connectez-vous avec votre compte administrateur.</p>
+    <input type="email" id="gateEmail" placeholder="Courriel" autocomplete="email" required>
+    <input type="password" id="gatePass" placeholder="Mot de passe" autocomplete="current-password" required>
+    <button type="submit" class="btn btn-primary">Se connecter</button>
+    <p class="gate-note" id="gateErr" style="color:var(--bad)"></p>
+  </form>
+</div>
+
+<div class="app" id="app" hidden style="grid-template-columns:1fr">
+  <main class="main">
+    <header class="topbar">
+      <h2>Réservations &amp; commandes en ligne</h2>
+      <div class="topbar-actions">
+        <a class="btn btn-ghost btn-sm" href="index.html">Back-office (interne)</a>
+        <a class="btn btn-ghost btn-sm" href="../index.html">Voir le site</a>
+        <button class="btn btn-ghost btn-sm" id="btnDeco">Se déconnecter</button>
+      </div>
+    </header>
+    <div class="view" id="view">
+      <div class="kpis" id="kpis"></div>
+
+      <div class="panel">
+        <div class="panel-h"><h3>Demandes de forfait (devis)</h3><span class="count" id="cntResa"></span></div>
+        <div class="tw"><table>
+          <thead><tr><th>Client</th><th>Forfait</th><th>Formule</th><th>Départ</th><th class="num">Pers.</th><th>Message</th><th>Reçu le</th><th>Statut</th></tr></thead>
+          <tbody id="corpsResa"></tbody>
+        </table></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h"><h3>Commandes boutique</h3><span class="count" id="cntCmd"></span></div>
+        <div class="tw"><table>
+          <thead><tr><th>Client</th><th>Article</th><th>Détail</th><th class="num">Qté</th><th>Reçu le</th><th>Statut</th></tr></thead>
+          <tbody id="corpsCmd"></tbody>
+        </table></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/supabase-config.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="clients.js?v=1"></script>
+</body>
+</html>

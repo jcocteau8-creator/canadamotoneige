@@ -262,11 +262,45 @@ if (track && dotsWrap) {
     qtyValue.textContent = state.qty;
     if (pdPrice && unitPrice) pdPrice.textContent = (unitPrice * state.qty).toString();
 
+    // Repli si le compte client n'est pas configure ou si le JS de commande
+    // echoue pour une raison quelconque : au moins pre-remplir le contact.
     var params = 'produit=' + encodeURIComponent(produit) + '&qte=' + state.qty;
     if (state.colorName) params += '&couleur=' + encodeURIComponent(state.colorName);
     if (state.size) params += '&taille=' + encodeURIComponent(state.size);
     orderBtn.setAttribute('href', 'contact.html?' + params);
   }
+
+  function variante() {
+    return [state.colorName, state.size].filter(Boolean).join(' / ');
+  }
+
+  function msg(id, texte) {
+    var p = document.getElementById(id);
+    if (p) { p.textContent = texte || ''; p.style.display = texte ? 'block' : 'none'; }
+  }
+
+  // La commande passe par le compte client : aucun paiement ici, on cree
+  // une commande au statut "paiement a organiser" et on la retrouve dans
+  // Mon compte. Si le compte client n'est pas configure, on garde le lien
+  // de repli pose ci-dessus (contact.html pre-rempli).
+  orderBtn.addEventListener('click', function (e) {
+    if (!window.CM_AUTH || !window.CM_AUTH.isConfigured) return; // repli natif
+    e.preventDefault();
+    msg('pdMsgErr', ''); msg('pdMsgOk', '');
+    var detail = { article: produit, variante: variante(), qte: state.qty };
+
+    if (window.CM_AUTH.getUser()) {
+      orderBtn.setAttribute('aria-busy', 'true');
+      window.CM_AUTH.creerCommande(detail).then(function () {
+        msg('pdMsgOk', 'Commande enregistrée dans votre compte : nous vous contactons pour le paiement et la remise.');
+      }).catch(function (err) {
+        msg('pdMsgErr', (err && err.message) || "Une erreur est survenue, réessayez.");
+      }).then(function () { orderBtn.removeAttribute('aria-busy'); });
+    } else {
+      try { sessionStorage.setItem('cm_commande_attente', JSON.stringify(detail)); } catch (err) {}
+      location.href = 'compte.html?depuisBoutique=1';
+    }
+  });
 
   function selectIn(group, chosen) {
     group.forEach(function (b) {
